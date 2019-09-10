@@ -22,6 +22,7 @@ class Oikotie(commands.Cog):
         self.running = False
         self.settings = self.get_settings()
 
+    @commands.Cog.listener()
     async def on_ready(self):
         if not self.running:
             print("Running loop")
@@ -56,6 +57,8 @@ class Oikotie(commands.Cog):
         if self.running:
             print("Destroyed duplicate loop instance")
             return
+        else:
+            self.running = True
         while True:
             for link in self.emulator():
                 house_id = int(link.split('/')[-1])
