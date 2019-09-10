@@ -6,13 +6,6 @@ from discord.ext import commands
 import yaml
 import asyncio
 
-firefox_profile = webdriver.FirefoxProfile()
-# firefox_profile.set_preference('permissions.default.image', 2)
-# firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
-options = Options()
-options.headless = True
-driver = webdriver.Firefox(options=options, firefox_profile=firefox_profile)
-
 
 class Oikotie(commands.Cog):
 
@@ -78,6 +71,13 @@ class Oikotie(commands.Cog):
             yaml.dump(self.settings, f, default_flow_style=False, allow_unicode=True)
 
     def emulator(self):
+        firefox_profile = webdriver.FirefoxProfile()
+        # firefox_profile.set_preference('permissions.default.image', 2)
+        # firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
+        options = Options()
+        options.headless = True
+        driver = webdriver.Firefox(options=options, firefox_profile=firefox_profile)
+
         url = 'https://asunnot.oikotie.fi/vuokrattavat-asunnot?pagination=1&cardType=101&' \
               f'locations={self.settings.get("location")}'
 
@@ -90,6 +90,7 @@ class Oikotie(commands.Cog):
         source = driver.find_element_by_xpath("//body").get_attribute('outerHTML')
         soup = BeautifulSoup(source, "lxml")
         cards = soup.find_all('a', {'class': 'ot-card'})
+        driver.close()
         return [card.get('href') for card in cards]
 
 
