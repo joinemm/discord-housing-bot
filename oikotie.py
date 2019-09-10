@@ -64,7 +64,7 @@ class Oikotie(commands.Cog):
                 house_id = int(link.split('/')[-1])
                 if house_id not in self.settings.get('house_ids'):
                     print("new house", house_id)
-                    self.client.get_channel(self.settings.get('channel').send(link))
+                    self.client.get_channel(self.settings.get('channel')).send(link)
                     self.settings['house_ids'].append(house_id)
             print("sleeping for 1 hour")
             await asyncio.sleep(3600)
